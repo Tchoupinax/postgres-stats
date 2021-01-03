@@ -1,0 +1,17 @@
+:root {
+  --color-theme-one-yin: white;
+  --color-theme-one-yang: black;
+
+  --color-theme-one-yin-dark: rgba(31, 41, 55, 1);
+  --color-theme-one-yang-dark: rgb(202, 202, 202);
+}
+
+html {
+  --color-theme-yin: var(--color-theme-one-yin);
+  --color-theme-yang: var(--color-theme-one-yang);
+}
+
+html.dark {
+  --color-theme-yin: var(--color-theme-one-yin-dark);
+  --color-theme-yang: var(--color-theme-one-yang-dark);
+}

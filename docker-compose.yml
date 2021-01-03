@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+  backend:
+    container_name: postgres-stats-backend
+    build: ./backend
+    command:
+      - sh
+      - -c
+      - |
+          cd /app
+          npm i
+          npm run watch
+    ports:
+    - "12000:12000"
+    networks:
+      - postgres-stats
+    volumes:
+      - ./backend:/app:delegated
+      - postgres-stats-backend:/app/node_modules/
+    depends_on:
+      - postgres
+      - mongodb
+  
+  postgres:
+    container_name: postgres-stats-pg
+    build: ./postgres
+    ports:
+    - "12001:5432"
+    volumes:
+    - postgres-stats-pg:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+    command: postgres -c shared_preload_libraries='pg_stat_statements' -c pg_stat_statements.track=all -c pg_stat_statements.max=10000
+    networks:
+      - postgres-stats
+
+  mongodb:
+    container_name: postgres-stats-mongo
+    image: mongo:4.4.2
+    ports:
+    - "12002:27017"
+    volumes:
+    - postgres-stats-mongodb:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodb
+      MONGO_INITDB_ROOT_PASSWORD: mongodb
+    command: mongod --auth
+    networks:
+      - postgres-stats
+
+networks:
+  postgres-stats:
+
+volumes:
+  postgres-stats-pg:
+  postgres-stats-mongodb:
+  postgres-stats-backend:

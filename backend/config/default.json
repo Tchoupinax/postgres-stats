@@ -1,0 +1,19 @@
+{
+  "services": {
+    "postgres": {
+      "hostname": "postgres-stats-pg",
+      "port": 5432,
+      "username": "postgres",
+      "password": "postgres",
+      "database": "postgres",
+      "ssl": false
+    },
+    "mongo": {
+      "hostname": "postgres-stats-mongo",
+      "port": 27017,
+      "username": "mongodb",
+      "password": "mongodb",
+      "database": "admin"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "services": {
+    "postgres": {
+      "hostname": "postgres-stats-pg-testing"
+    },
+    "mongo": {
+      "hostname": "postgres-stats-mongo-testing"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  backend-testing:
+    container_name: postgres-stats-backend-testing
+    build: ./backend
+    command:
+      - sh
+      - -c
+      - |
+          cd /app
+          npm i
+          npm run test:e2e
+    networks:
+      - postgres-stats-testing
+    volumes:
+      - ./backend:/app:delegated
+      - postgres-stats-backend:/app/node_modules/
+    depends_on:
+      - postgres
+      - mongodb
+
+  postgres:
+    container_name: postgres-stats-pg-testing
+    build: ./postgres
+    ports:
+    - "32157:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+    command: postgres -c shared_preload_libraries='pg_stat_statements' -c pg_stat_statements.track=all -c pg_stat_statements.max=10000
+    networks:
+      - postgres-stats-testing
+
+  mongodb:
+    container_name: postgres-stats-mongo-testing
+    image: mongo:4.4.2
+    ports:
+    - "32156:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodb
+      MONGO_INITDB_ROOT_PASSWORD: mongodb
+    command: mongod --auth
+    networks:
+      - postgres-stats-testing
+
+networks:
+  postgres-stats-testing:
+
+volumes:
+  postgres-stats-backend:

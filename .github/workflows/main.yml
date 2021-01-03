@@ -1,0 +1,17 @@
+name: Tests
+
+# Controls when the action will run. 
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  test-e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Run a one-line script
+        run: cd backend && npm run test:e2e:docker
